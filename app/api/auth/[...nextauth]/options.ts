@@ -3,7 +3,6 @@ import userModel from "@/model/User";
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
-import { getToken } from "next-auth/jwt";
 
 export const authOptions: NextAuthOptions = {
     providers:[
@@ -11,10 +10,10 @@ export const authOptions: NextAuthOptions = {
             id: "credentials",
             name: "Credentials",
             credentials: {
-                email: { label: "email", type: "text" },
+                identifier: { label: "username or email", type: "text" },
                 password: { label: "Password", type: "password" }
             },
-            async authorize(credentials: any): Promise<any>{
+            async authorize(credentials: any): Promise<any> {
                 await dbConnect();
                 try {
                     const user = await userModel.findOne({

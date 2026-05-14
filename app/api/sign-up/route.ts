@@ -37,6 +37,7 @@ export async function POST(request: Request) {
       else{
         //User exists but is not verified, update the existing user with new details and resend verification email
         const hashedPassword = await bcrypt.hash(password, 10);
+        existingUserbyEmail.username = username
         existingUserbyEmail.password = hashedPassword
         existingUserbyEmail.verifycode = verifyCode
         existingUserbyEmail.verifycodeexpiry = new Date(Date.now()+ 3600000).toISOString()
