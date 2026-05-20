@@ -7,7 +7,7 @@ export async function sendVerificationEmail(username: string, email: string, ver
         await resend.emails.send({
             from: 'noreply@abhikhokhar.tech',
             to: email,
-            subject: "PingMe - Your Verification Code",
+            subject: "Whispr  - Your Verification Code",
             react: VerificationEmail({username, otp: verifycode}),
         });
         return {
