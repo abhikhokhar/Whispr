@@ -7,6 +7,7 @@ export async function POST(request: Request){
     await dbConnect();
     const session = await getServerSession(authOptions)
     const user = session?.user
+    console.log('Session user:', user)
     if(!session || !user){
         return Response.json({
             success: false,
@@ -14,6 +15,7 @@ export async function POST(request: Request){
         },{status:401})
     }
     const userId = user._id
+
     const { acceptingMessages } = await request.json()
     const updatedUser = await userModel.findByIdAndUpdate(
     userId,
@@ -24,6 +26,7 @@ export async function POST(request: Request){
         new: true
     }
 )
+console.log('Updated user:', updatedUser?.isAcceptingMessages)
     if(!updatedUser){
         return Response.json({
             success: false,

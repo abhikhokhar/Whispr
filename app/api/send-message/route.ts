@@ -19,7 +19,7 @@ export async function POST(request: Request){
                 message: " user is not accepting messages",
             },{status: 403})
         }
-        const newMessages = {content, createdAt: new Date()}
+        const newMessages = {message: content, createdAt: new Date()}
         user.messages.push(newMessages as unknown as message)
         await user.save()
         return Response.json({
@@ -27,6 +27,7 @@ export async function POST(request: Request){
             message: "Message sent successfully",
         },{status: 200})
     } catch (error) {
+        console.error("Error sending message:", error);
         return Response.json({
             success: false,
             message: "Failed to send message",

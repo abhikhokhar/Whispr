@@ -30,7 +30,7 @@ export async function GET(request: Request){
         }
         return Response.json({
             success: true,
-            message: user[0].messages,
+            messages: user[0].messages,
         },{status:200})
 
     } catch (error) {
