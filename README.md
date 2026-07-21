@@ -38,25 +38,6 @@
 
 </div>
 
-## 📋 Table of Contents
-
-- [About](#-about)
-- [Screenshots](#-screenshots)
-- [Features](#-features)
-- [Tech Stack](#-tech-stack)
-- [Architecture](#-architecture)
-- [Project Structure](#-project-structure)
-- [Getting Started](#-getting-started)
-- [Environment Variables](#-environment-variables)
-- [Deployment](#-deployment)
-- [Why Whispr?](#-why-whispr)
-- [Performance](#-performance)
-- [Roadmap](#-roadmap)
-- [Contributing](#-contributing)
-- [Author](#-author)
-- [Support](#-support)
-- [License](#-license)
-
 ---
 
 ## 🌌 About
