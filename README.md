@@ -1,7 +1,5 @@
 <div align="center">
-
 <br />
-
 # 🌌 Whispr
 
 ### AI-Powered Anonymous Messaging Platform
@@ -99,9 +97,8 @@ Unlike traditional anonymous messaging tools, Whispr integrates **Groq AI** to g
 ### 🔐 Authentication
 
 ```
-<img width="1912" height="892" alt="image" src="https://github.com/user-attachments/assets/a24cf700-d345-4eae-8c64-1660ee472e5f" />
-
 ```
+<img width="1912" height="892" alt="image" src="https://github.com/user-attachments/assets/a24cf700-d345-4eae-8c64-1660ee472e5f" />
 <img width="1907" height="893" alt="image" src="https://github.com/user-attachments/assets/e88477c5-4c47-4dde-8fd6-cdf94c3f167f" />
 
 ---
@@ -109,7 +106,7 @@ Unlike traditional anonymous messaging tools, Whispr integrates **Groq AI** to g
 
 
 ### 📊 Dashboard
-
+```
 ```
 <img width="1897" height="857" alt="image" src="https://github.com/user-attachments/assets/a8c618d7-f28e-4952-a2a4-20d55908b6c8" />
 ```
@@ -119,10 +116,9 @@ Unlike traditional anonymous messaging tools, Whispr integrates **Groq AI** to g
 
 ```
 <img width="1708" height="833" alt="image" src="https://github.com/user-attachments/assets/fe267178-0609-4660-b749-2cb3f1251f2e" />
-
-```
 <img width="1911" height="842" alt="image" src="https://github.com/user-attachments/assets/c32c7cf9-159e-4b60-bb36-2f1ed31fdb00" />
 
+```
 ---
 
 ### 🤖 AI Message Suggestions
@@ -131,7 +127,6 @@ Unlike traditional anonymous messaging tools, Whispr integrates **Groq AI** to g
 <img width="718" height="626" alt="image" src="https://github.com/user-attachments/assets/e0beb125-bd92-4eaf-869a-bb50357de272" />
 
 ```
-
 ---
 
 ### 💬 Anonymous Chat
