@@ -26,20 +26,24 @@ const SignInPage = () => {
   const { register, handleSubmit, formState: { errors } } = form
 
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
-    setIsSubmitting(true)
-    const result = await signIn('credentials',{
-      identifier: data.identifier,
-      password: data.password,
-      redirect: false,
-    })
-    if(result?.error){
-      toast.error(result.error)
-    }else{
-      toast.success("Signed in successfully!")
-    }
-    if(result?.url){
-      router.push('/dashboard')
-    }
+   try {
+  setIsSubmitting(true);
+
+  const result = await signIn("credentials", {
+    identifier: data.identifier,
+    password: data.password,
+    callbackUrl: "/dashboard",
+  });
+
+  if (result?.error) {
+    toast.error(result.error);
+    return;
+  }
+
+  toast.success("Signed in successfully!");
+} finally {
+  setIsSubmitting(false);
+}
   }
 
   return (
