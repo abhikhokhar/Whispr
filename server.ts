@@ -8,13 +8,10 @@ import ChatMessage from "./model/ChatMessage";
 
 const dev = process.env.NODE_ENV !== "production";
 
-const hostname = "localhost";
-const port = 3000;
+const port = Number(process.env.PORT) || 3000;
 
 const app = next({
   dev,
-  hostname,
-  port,
 });
 
 const handler = app.getRequestHandler();
@@ -28,6 +25,7 @@ app.prepare().then(() => {
     cors: {
       origin: process.env.CLIENT_URL || "http://localhost:3000",
       methods: ["GET", "POST"],
+      credentials: true,
     },
   });
 
@@ -134,7 +132,7 @@ socket.on(
     return handler(req, res);
   });
 
-  server.listen(port, () => {
-    console.log(`> Ready on http://localhost:${port}`);
-  });
+  server.listen(port, "0.0.0.0", () => {
+  console.log(`Server running on port ${port}`);
+});
 });
