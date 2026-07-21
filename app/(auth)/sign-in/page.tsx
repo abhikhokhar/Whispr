@@ -32,8 +32,12 @@ const SignInPage = () => {
   const result = await signIn("credentials", {
     identifier: data.identifier,
     password: data.password,
-    callbackUrl: "/dashboard",
+    redirect: false,
   });
+
+  if (result?.ok) {
+  router.replace("/dashboard");
+}
 
   if (result?.error) {
     toast.error(result.error);

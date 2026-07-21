@@ -80,9 +80,6 @@ const Dashboard = () => {
   const username   = session?.user?.username
   const profileUrl = typeof window !== 'undefined' ? `${window.location.origin}/u/${username}` : `/u/${username}`
 
-  useEffect(() => {
-    if (status === 'unauthenticated') router.replace('/sign-in')
-  }, [status, router])
 
   const fetchStatus = useCallback(async () => {
     setFetchingStatus(true)
