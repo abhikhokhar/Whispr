@@ -63,6 +63,88 @@ const VerifyAccount = () => {
 
   return (
     <>
+      <div className="whispr-root">
+        <div className="blob blob-1" />
+        <div className="blob blob-2" />
+        <div className="blob blob-3" />
+
+        <div className="card">
+          <div className="corner-tl" />
+          <div className="corner-br" />
+
+          {/* Brand — same as signup */}
+          <div className="brand">
+            <div className="brand-top">
+              <div className="logo-wrap">
+                <svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg" width="52" height="52">
+                  <rect x="10" y="14" width="52" height="36" rx="12" fill="url(#bubbleGradV)" opacity="0.95"/>
+                  <rect x="10" y="14" width="52" height="36" rx="12"
+                    fill="none" stroke="rgba(129,140,248,0.4)" strokeWidth="0.5"/>
+                  <polygon points="22,50 14,60 30,50" fill="url(#bubbleGradV)" opacity="0.95"/>
+                  <defs>
+                    <linearGradient id="bubbleGradV" x1="10" y1="14" x2="62" y2="50" gradientUnits="userSpaceOnUse">
+                      <stop offset="0%" stopColor="#6366f1"/>
+                      <stop offset="100%" stopColor="#ec4899"/>
+                    </linearGradient>
+                  </defs>
+                  <circle cx="28" cy="32" r="3.5" fill="white" opacity="0.9"/>
+                  <circle cx="36" cy="32" r="3.5" fill="white" opacity="0.9"/>
+                  <circle cx="44" cy="32" r="3.5" fill="white" opacity="0.9"/>
+                </svg>
+              </div>
+              <div className="brand-name">Whi<span>spr</span></div>
+            </div>
+            <p className="brand-tagline">Your thoughts, refined by AI</p>
+          </div>
+
+          {/* Verify header */}
+          <div className="verify-header">
+            <p className="verify-title">Check your inbox</p>
+            <p className="verify-sub">
+              Enter the 6-digit code sent to your email
+              {param.username && <><br />for <strong>@{param.username}</strong></>}
+            </p>
+          </div>
+
+          {/* OTP inputs */}
+          <div className="otp-row">
+            {Array.from({ length: OTP_LENGTH }).map((_, i) => (
+  <div key={i} style={{ display: 'contents' }}>
+    {i === 3 && <span className="otp-dash">—</span>}
+    <input
+      ref={el => { inputsRef.current[i] = el }}
+      type="text"
+      inputMode="numeric"
+      maxLength={1}
+      value={otp[i]}
+      className={`otp-cell${otp[i] ? ' filled' : ''}`}
+      placeholder="·"
+      onChange={e => handleChange(i, e.target.value)}
+      onKeyDown={e => handleKeyDown(i, e)}
+      autoFocus={i === 0}
+    />
+  </div>
+))}
+          </div>
+
+          <div className="divider"><span>secure verification</span></div>
+
+          <button
+            className="submit-btn"
+            disabled={isSubmitting || !isComplete}
+            onClick={onSubmit}
+          >
+            <span className="btn-inner">
+              {isSubmitting ? (
+                <><span className="spinner" /> Verifying...</>
+              ) : (
+                <>Verify account →</>
+              )}
+            </span>
+          </button>
+        </div>
+      </div>
+
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Mono:wght@300;400&display=swap');
 
@@ -371,88 +453,6 @@ const VerifyAccount = () => {
         }
         .resend-btn:hover { color: #a5b4fc; border-color: rgba(165,180,252,0.6); }
       `}</style>
-
-      <div className="whispr-root">
-        <div className="blob blob-1" />
-        <div className="blob blob-2" />
-        <div className="blob blob-3" />
-
-        <div className="card">
-          <div className="corner-tl" />
-          <div className="corner-br" />
-
-          {/* Brand — same as signup */}
-          <div className="brand">
-            <div className="brand-top">
-              <div className="logo-wrap">
-                <svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg" width="52" height="52">
-                  <rect x="10" y="14" width="52" height="36" rx="12" fill="url(#bubbleGradV)" opacity="0.95"/>
-                  <rect x="10" y="14" width="52" height="36" rx="12"
-                    fill="none" stroke="rgba(129,140,248,0.4)" strokeWidth="0.5"/>
-                  <polygon points="22,50 14,60 30,50" fill="url(#bubbleGradV)" opacity="0.95"/>
-                  <defs>
-                    <linearGradient id="bubbleGradV" x1="10" y1="14" x2="62" y2="50" gradientUnits="userSpaceOnUse">
-                      <stop offset="0%" stopColor="#6366f1"/>
-                      <stop offset="100%" stopColor="#ec4899"/>
-                    </linearGradient>
-                  </defs>
-                  <circle cx="28" cy="32" r="3.5" fill="white" opacity="0.9"/>
-                  <circle cx="36" cy="32" r="3.5" fill="white" opacity="0.9"/>
-                  <circle cx="44" cy="32" r="3.5" fill="white" opacity="0.9"/>
-                </svg>
-              </div>
-              <div className="brand-name">Whi<span>spr</span></div>
-            </div>
-            <p className="brand-tagline">Your thoughts, refined by AI</p>
-          </div>
-
-          {/* Verify header */}
-          <div className="verify-header">
-            <p className="verify-title">Check your inbox</p>
-            <p className="verify-sub">
-              Enter the 6-digit code sent to your email
-              {param.username && <><br />for <strong>@{param.username}</strong></>}
-            </p>
-          </div>
-
-          {/* OTP inputs */}
-          <div className="otp-row">
-            {Array.from({ length: OTP_LENGTH }).map((_, i) => (
-  <div key={i} style={{ display: 'contents' }}>
-    {i === 3 && <span className="otp-dash">—</span>}
-    <input
-      ref={el => { inputsRef.current[i] = el }}
-      type="text"
-      inputMode="numeric"
-      maxLength={1}
-      value={otp[i]}
-      className={`otp-cell${otp[i] ? ' filled' : ''}`}
-      placeholder="·"
-      onChange={e => handleChange(i, e.target.value)}
-      onKeyDown={e => handleKeyDown(i, e)}
-      autoFocus={i === 0}
-    />
-  </div>
-))}
-          </div>
-
-          <div className="divider"><span>secure verification</span></div>
-
-          <button
-            className="submit-btn"
-            disabled={isSubmitting || !isComplete}
-            onClick={onSubmit}
-          >
-            <span className="btn-inner">
-              {isSubmitting ? (
-                <><span className="spinner" /> Verifying...</>
-              ) : (
-                <>Verify account →</>
-              )}
-            </span>
-          </button>
-        </div>
-      </div>
     </>
   )
 }

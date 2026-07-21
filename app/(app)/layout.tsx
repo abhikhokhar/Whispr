@@ -1,6 +1,6 @@
 import { Toaster } from "sonner";
 import AuthProvider from "@/context/AuthProvider";
-import Navbar from "@/components/navbar";
+import { SocketProvider } from "@/context/SocketProvider";
 
 export default function AppLayout({
   children,
@@ -10,8 +10,10 @@ export default function AppLayout({
   return (
     <AuthProvider>
       <div className="min-h-screen flex flex-col">
-        <Navbar />
+        <SocketProvider>
+        
         {children}
+        </SocketProvider>
         <Toaster />
       </div>
     </AuthProvider>

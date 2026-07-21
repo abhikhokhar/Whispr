@@ -30,5 +30,6 @@ export const config = {
     "/sign-up",
     "/verify",
     "/dashboard/:path*",
+    "/chat",
   ],
 };

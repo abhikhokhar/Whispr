@@ -69,7 +69,144 @@ const Page = ()=>{
     }
 
     return (
-    <>
+    <> 
+      <div className="whispr-root">
+        <div className="blob blob-1" />
+        <div className="blob blob-2" />
+        <div className="blob blob-3" />
+ 
+        <div className="card">
+          <div className="corner-tl" />
+          <div className="corner-br" />
+ 
+        {/* Brand */}
+<div className="brand">
+  <div className="brand-top">
+    <div className="logo-wrap">
+      <svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg" width="64" height="64">
+        <rect x="10" y="14" width="52" height="36" rx="12" fill="url(#bubbleGrad)" opacity="0.95"/>
+        <rect x="10" y="14" width="52" height="36" rx="12"
+          fill="none" stroke="rgba(129,140,248,0.4)" strokeWidth="0.5"/>
+        <polygon points="22,50 14,60 30,50" fill="url(#bubbleGrad)" opacity="0.95"/>
+        <defs>
+          <linearGradient id="bubbleGrad" x1="10" y1="14" x2="62" y2="50" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#6366f1"/>
+            <stop offset="100%" stopColor="#ec4899"/>
+          </linearGradient>
+        </defs>
+        <circle cx="28" cy="32" r="3.5" fill="white" opacity="0.9"/>
+        <circle cx="36" cy="32" r="3.5" fill="white" opacity="0.9"/>
+        <circle cx="44" cy="32" r="3.5" fill="white" opacity="0.9"/>
+      </svg>
+    </div>
+    <div className="brand-name">Whi<span>spr</span></div>
+  </div>
+  <p className="brand-tagline">Your thoughts, refined by AI</p>
+</div>
+          <form className="signup-form" onSubmit={handleSubmit(onSubmit)}>
+ 
+            <div className="field-group">
+              <label htmlFor="username">Username</label>
+              <div className={`input-wrap ${focusedField === 'username' ? 'focused' : ''}`}>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                </svg>
+                <input
+                  id="username"
+                  type="text"
+                  placeholder="username"
+                  className={errors.username ? 'error-state' : ''}
+                  onFocus={() => setFocusedField('username')}
+                  {...register('username', {
+                    onChange: (e) => debounced(e.target.value),
+                    onBlur: () => setFocusedField(null),
+                  })}
+                />
+              </div>
+              {username && (
+                <div>
+                  <span className="status-dot" />
+                  {isCheckingUsername && <Loader2 className="mr-2 h-4 animate-spin" />
+                  } <p className={`text-sm ${usernameMessage === "Username is available" ? "text-green-500" : "text-red-500"}`}>{usernameMessage}</p>
+                </div>
+              )}
+              {errors.username && (
+                <span className="field-error">↳ {errors.username.message}</span>
+              )}
+            </div>
+ 
+            {/* Email */}
+            <div className="field-group">
+              <label htmlFor="email">Email</label>
+              <div className={`input-wrap ${focusedField === 'email' ? 'focused' : ''}`}>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                </svg>
+                <input
+                  id="email"
+                  type="email"
+                  placeholder="you@domain.com"
+                  className={errors.email ? 'error-state' : ''}
+                  onFocus={() => setFocusedField('email')}
+                  {...register('email')}
+                />
+              </div>
+              {errors.email && (
+                <span className="field-error">↳ {errors.email.message}</span>
+              )}
+            </div>
+ 
+            <div className="field-group">
+              <label htmlFor="password">Password</label>
+              <div className={`input-wrap ${focusedField === 'password' ? 'focused' : ''}`}>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                </svg>
+                <input
+                  id="password"
+                  type="password"
+                  placeholder="password"
+                  className={errors.password ? 'error-state' : ''}
+                  onFocus={() => setFocusedField('password')}
+                  {...register('password')}
+                />
+              </div>
+              {errors.password && (
+                <span className="field-error">↳ {errors.password.message}</span>
+              )}
+            </div>
+ 
+            <div className="divider"><span>secure sign up</span></div>
+ 
+            {/* Submit */}
+            <button
+              type="submit"
+              className="submit-btn"
+              disabled={isSubmitting}
+            >
+              <span className="btn-inner">
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className='mr-2 h-4 animate spin'/>
+                    Creating account...
+                  </>
+                ) : (
+                  <>
+                    Begin whispering →
+                  </>
+                )}
+              </span>
+            </button>
+ 
+          </form>
+ 
+          <p className="signin-link" style={{ marginTop: '20px' }}>
+            Already have an account?{' '}
+            <Link href="/sign-in">Sign in</Link>
+          </p>
+        </div>
+      </div>
+
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Mono:wght@300;400&display=swap');
  
@@ -475,147 +612,6 @@ const Page = ()=>{
   margin: 0;
 }
       `}</style>
- 
-      <div className="whispr-root">
-        <div className="blob blob-1" />
-        <div className="blob blob-2" />
-        <div className="blob blob-3" />
- 
-        <div className="card">
-          <div className="corner-tl" />
-          <div className="corner-br" />
- 
-        {/* Brand */}
-<div className="brand">
-  <div className="brand-top">
-    <div className="logo-wrap">
-      <svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg" width="64" height="64">
-        <rect x="10" y="14" width="52" height="36" rx="12" fill="url(#bubbleGrad)" opacity="0.95"/>
-        <rect x="10" y="14" width="52" height="36" rx="12"
-          fill="none" stroke="rgba(129,140,248,0.4)" strokeWidth="0.5"/>
-        <polygon points="22,50 14,60 30,50" fill="url(#bubbleGrad)" opacity="0.95"/>
-        <defs>
-          <linearGradient id="bubbleGrad" x1="10" y1="14" x2="62" y2="50" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#6366f1"/>
-            <stop offset="100%" stopColor="#ec4899"/>
-          </linearGradient>
-        </defs>
-        <circle cx="28" cy="32" r="3.5" fill="white" opacity="0.9"/>
-        <circle cx="36" cy="32" r="3.5" fill="white" opacity="0.9"/>
-        <circle cx="44" cy="32" r="3.5" fill="white" opacity="0.9"/>
-      </svg>
-    </div>
-    <div className="brand-name">Whi<span>spr</span></div>
-  </div>
-  <p className="brand-tagline">Your thoughts, refined by AI</p>
-</div>
-          {/* Form */}
-          <form className="signup-form" onSubmit={handleSubmit(onSubmit)}>
- 
-            {/* Username */}
-            <div className="field-group">
-              <label htmlFor="username">Username</label>
-              <div className={`input-wrap ${focusedField === 'username' ? 'focused' : ''}`}>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                </svg>
-                <input
-                  id="username"
-                  type="text"
-                  placeholder="username"
-                  className={errors.username ? 'error-state' : ''}
-                  onFocus={() => setFocusedField('username')}
-                  {...register('username', {
-                    onChange: (e) => debounced(e.target.value),
-                    onBlur: () => setFocusedField(null),
-                  })}
-                />
-              </div>
-              {/* Username check status */}
-              {username && (
-                <div>
-                  <span className="status-dot" />
-                  {isCheckingUsername && <Loader2 className="mr-2 h-4 animate-spin" />
-                  } <p className={`text-sm ${usernameMessage === "Username is available" ? "text-green-500" : "text-red-500"}`}>{usernameMessage}</p>
-                </div>
-              )}
-              {errors.username && (
-                <span className="field-error">↳ {errors.username.message}</span>
-              )}
-            </div>
- 
-            {/* Email */}
-            <div className="field-group">
-              <label htmlFor="email">Email</label>
-              <div className={`input-wrap ${focusedField === 'email' ? 'focused' : ''}`}>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-                </svg>
-                <input
-                  id="email"
-                  type="email"
-                  placeholder="you@domain.com"
-                  className={errors.email ? 'error-state' : ''}
-                  onFocus={() => setFocusedField('email')}
-                  {...register('email')}
-                />
-              </div>
-              {errors.email && (
-                <span className="field-error">↳ {errors.email.message}</span>
-              )}
-            </div>
- 
-            {/* Password */}
-            <div className="field-group">
-              <label htmlFor="password">Password</label>
-              <div className={`input-wrap ${focusedField === 'password' ? 'focused' : ''}`}>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
-                </svg>
-                <input
-                  id="password"
-                  type="password"
-                  placeholder="password"
-                  className={errors.password ? 'error-state' : ''}
-                  onFocus={() => setFocusedField('password')}
-                  {...register('password')}
-                />
-              </div>
-              {errors.password && (
-                <span className="field-error">↳ {errors.password.message}</span>
-              )}
-            </div>
- 
-            <div className="divider"><span>secure sign up</span></div>
- 
-            {/* Submit */}
-            <button
-              type="submit"
-              className="submit-btn"
-              disabled={isSubmitting}
-            >
-              <span className="btn-inner">
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className='mr-2 h-4 animate spin'/>
-                    Creating account...
-                  </>
-                ) : (
-                  <>
-                    Begin whispering →
-                  </>
-                )}
-              </span>
-            </button>
- 
-          </form>
- 
-          <p className="signin-link" style={{ marginTop: '20px' }}>
-            Already have an account?{' '}
-            <Link href="/sign-in">Sign in</Link>
-          </p>
-        </div>
-      </div>
     </>
   )
 

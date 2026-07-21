@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import AuthProvider from "@/context/AuthProvider";
 import { Toaster } from "@/components/ui/sonner"
 import './globals.css'
+import { SocketProvider } from "@/context/SocketProvider";
 
 
 const geistSans = Geist({
@@ -32,7 +33,9 @@ export default function RootLayout({
     >
       <AuthProvider>
       <body className="min-h-full flex flex-col">
+        <SocketProvider>
         {children}
+        </SocketProvider>
         <Toaster />
       </body>
       </AuthProvider>
