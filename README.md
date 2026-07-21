@@ -145,6 +145,8 @@ Unlike traditional anonymous messaging tools, Whispr integrates **Groq AI** to g
 ```
 
 ---
+```
+
 
 
 ## ✨ Features
