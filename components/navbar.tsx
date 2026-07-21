@@ -2,6 +2,8 @@
 import { useSession, signOut } from "next-auth/react"
 import { User } from "next-auth"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
+
 
 const globalStyles = `
   @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Mono:wght@300;400&display=swap');
@@ -78,6 +80,8 @@ const Navbar = () => {
   const { data: session } = useSession()
   const user = session?.user as User
   const username = user?.username
+    const router = useRouter()
+  
 
   return (
     <>
@@ -107,12 +111,12 @@ const Navbar = () => {
                 {username && <span className="nav-user">@{username}</span>}
                 <button
                   className="signout-btn"
-                  onClick={() =>
-  signOut({
-    redirect: true,
-    callbackUrl: `${window.location.origin}/sign-in`,
-  })
-}
+                  onClick={async () => {
+                    await signOut({
+                      redirect: false,
+                    })
+                    router.push("/sign-in")
+                  }}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} width={15} height={15}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />

@@ -25,6 +25,7 @@ export interface user extends Document{
     verifycodeexpiry: string,
     isAcceptingMessages: boolean,
     messages: message[],
+    fcmToken:string,
 }
 
 const userSchema : Schema<user> = new Schema({
@@ -60,7 +61,11 @@ const userSchema : Schema<user> = new Schema({
         type: Boolean,
         default: true,
     },
-    messages:[messageSchema],    
+    messages:[messageSchema],  
+    fcmToken: {
+    type: String,
+    default: "",
+  },  
 })
 
 const userModel = mongoose.models.User as mongoose.Model<user> || mongoose.model<user>("User", userSchema);

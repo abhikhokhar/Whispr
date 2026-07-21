@@ -7,6 +7,7 @@ import axios, { AxiosError } from 'axios'
 import { ApiResponse } from '@/types/ApiResponse'
 import { message } from '@/model/User'
 import Navbar from '@/components/navbar'
+import { getFirebaseToken } from "@/lib/firebase-messaging";
 
 /* ── Types ── */
 interface ChatSession {
@@ -107,6 +108,35 @@ const Dashboard = () => {
     } catch { toast.error('Could not fetch conversations') }
     finally { setFetchingSessions(false) }
   }, [])
+
+  useEffect(() => {
+  async function setupNotifications() {
+    const permission = await Notification.requestPermission();
+
+    if (permission !== "granted") {
+      console.log("Notification permission denied");
+      return;
+    }
+
+    const token = await getFirebaseToken();
+
+if (!token) return;
+
+await fetch("/api/save-fcm-token", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    token,
+  }),
+});
+
+console.log("Saved FCM Token");
+  }
+
+  setupNotifications();
+}, []);
 
   useEffect(() => {
     if (!session) return
@@ -521,7 +551,7 @@ const globalStyles = `
   /* ── LINK ROW ── */
   .link-row { display: flex; gap: 10px; align-items: center; }
   .link-box { flex: 1; padding: 10px 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 9px; overflow: hidden; }
-  .link-text { font-size: 0.68rem; color: #475569; letter-spacing: 0.03em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
+  .link-text { font-size: 0.68rem; color: #748697; letter-spacing: 0.03em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
   .copy-btn { display: flex; align-items: center; gap: 6px; padding: 10px 16px; background: linear-gradient(135deg, #6366f1, #8b5cf6); border: none; border-radius: 9px; color: #fff; font-family: 'DM Mono', monospace; font-size: 0.72rem; letter-spacing: 0.08em; cursor: pointer; white-space: nowrap; transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s; box-shadow: 0 4px 16px rgba(99,102,241,0.25); }
   .copy-btn:hover { opacity: 0.9; transform: translateY(-1px); }
   .copy-btn.copied { background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 4px 16px rgba(16,185,129,0.25); }

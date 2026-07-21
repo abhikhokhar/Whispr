@@ -5,6 +5,14 @@ import { Server } from "socket.io";
 import ChatSession from "./model/ChatSession";
 import dbConnect from "./lib/dbConnect";
 import ChatMessage from "./model/ChatMessage";
+import { messaging } from "./lib/firebaseAdmin";
+import User from "./model/User";
+
+import dotenv from "dotenv";
+
+dotenv.config({
+  path: ".env.local",
+});
 
 const dev = process.env.NODE_ENV !== "production";
 
@@ -23,7 +31,7 @@ app.prepare().then(() => {
 
   const io = new Server(server, {
     cors: {
-      origin: process.env.CLIENT_URL || "http://localhost:3000",
+      origin: process.env.CLIENT_URL,
       methods: ["GET", "POST"],
       credentials: true,
     },
@@ -39,38 +47,37 @@ app.prepare().then(() => {
     });
 
     socket.on(
-  "typing",
-  ({
-    chatSessionId,
-    sender,
-  }: {
-    chatSessionId: string;
-    sender: "anonymous" | "owner";
-  }) => {
+      "typing",
+      ({
+        chatSessionId,
+        sender,
+      }: {
+        chatSessionId: string;
+        sender: "anonymous" | "owner";
+      }) => {
+        console.log("⌨️ Typing:", chatSessionId, sender);
 
-    console.log("⌨️ Typing:", chatSessionId, sender);
+        socket.to(chatSessionId).emit("typing", {
+          chatSessionId,
+          sender,
+        });
+      },
+    );
 
-    socket.to(chatSessionId).emit("typing", {
-      chatSessionId,
-      sender,
-    });
-  }
-);
-
-socket.on(
-  "stop-typing",
-  ({
-    chatSessionId,
-    sender,
-  }: {
-    chatSessionId: string;
-    sender: "anonymous" | "owner";
-  }) => {
-    socket.to(chatSessionId).emit("stop-typing", {
-      sender,
-    });
-  }
-);
+    socket.on(
+      "stop-typing",
+      ({
+        chatSessionId,
+        sender,
+      }: {
+        chatSessionId: string;
+        sender: "anonymous" | "owner";
+      }) => {
+        socket.to(chatSessionId).emit("stop-typing", {
+          sender,
+        });
+      },
+    );
 
     socket.on(
       "send-message",
@@ -90,6 +97,14 @@ socket.on(
 
           if (!session) return;
 
+          const owner = await User.findById(session.ownerId);
+
+          if (!owner?.fcmToken) {
+            console.log("Owner has no FCM token");
+          } else {
+            console.log("Owner FCM Token:", owner.fcmToken);
+          }
+
           const message = await ChatMessage.create({
             chatSessionId,
             sender,
@@ -101,6 +116,29 @@ socket.on(
 
           await session.save();
 
+          if (owner?.fcmToken) {
+            try {
+              await messaging.send({
+                token: owner.fcmToken,
+
+                notification: {
+                  title: "Whispr: New Anonymous Message",
+                  body: content,
+                },
+
+                data: {
+                  chatSessionId,
+                  type: "new-message",
+                  url: `/chat/${chatSessionId}`,
+                },
+              });
+
+              console.log("✅ Push notification sent");
+            } catch (error) {
+              console.error("Notification Error:", error);
+            }
+          }
+
           const payload = {
             _id: message._id,
             chatSessionId,
@@ -109,11 +147,8 @@ socket.on(
             createdAt: message.createdAt,
           };
 
-          // Chat window
           io.to(chatSessionId).emit("new-message", payload);
 
-
-          // Sidebar (all logged-in pages)
           io.emit("sidebar-update", payload);
 
           console.log("📨 Message sent:", content);
@@ -133,6 +168,6 @@ socket.on(
   });
 
   server.listen(port, "0.0.0.0", () => {
-  console.log(`Server running on port ${port}`);
-});
+    console.log(`Server running on port ${port}`);
+  });
 });
