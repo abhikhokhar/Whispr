@@ -2,7 +2,7 @@
   
 <br />
 
-# 🌌 Whispr
+# Whispr-AI
 
 ### AI-Powered Anonymous Messaging Platform
 
