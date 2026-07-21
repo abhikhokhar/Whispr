@@ -152,13 +152,16 @@ const [isTyping, setIsTyping] = useState(false);
 
 const [chatSessionId, setChatSessionId] = useState("");
 
-const bottomRef = useRef<HTMLDivElement>(null);
 const inputRef = useRef<HTMLTextAreaElement>(null);
+const messagesRef = useRef<HTMLDivElement>(null);
 
 
 
- useEffect(() => {
-    bottomRef.current?.scrollIntoView({
+useEffect(() => {
+  if (!messagesRef.current) return;
+
+  messagesRef.current.scrollTo({
+    top: messagesRef.current.scrollHeight,
     behavior: "smooth",
   });
 }, [msgs]);
@@ -299,11 +302,11 @@ const handleKey = (
         <h2 className="f-cormorant" style={{fontSize:'clamp(1.5rem,4vw,2rem)',fontWeight:300,color:'#f1f5f9',lineHeight:1.2,marginBottom:10}}>
           Start an <span className="grad-teal" style={{fontStyle:'italic'}}>anonymous</span> conversation
         </h2>
-        <p className="f-mono" style={{fontSize:'0.72rem',color:'#475569',letterSpacing:'0.04em',lineHeight:1.7,maxWidth:340,margin:'0 auto 28px'}}>
+        <p className="f-mono" style={{fontSize:'0.72rem',color:'#748697',letterSpacing:'0.04em',lineHeight:1.7,maxWidth:340,margin:'0 auto 28px'}}>
           Chat freely with <span style={{color:'#818cf8'}}>@{username}</span> without revealing your identity. No sign-up required.
         </p>
         <div style={{display:'flex',flexWrap:'wrap',justifyContent:'center',gap:10,marginBottom:28}}>
-          {[['🕵️','100% Anonymous'],['⚡','Real-time'],['🔒','No sign-up'],['✨','AI powered']].map(([icon,label]) => (
+          {[['🕵️','100% Anonymous'],['⚡','Real-time'],['🔒','No sign-up']].map(([icon,label]) => (
             <div key={label} style={{display:'flex',alignItems:'center',gap:6,padding:'6px 14px',background:'rgba(34,211,238,.06)',border:'1px solid rgba(34,211,238,.15)',borderRadius:100,color:'#22d3ee',fontFamily:"'DM Mono',monospace",fontSize:'0.65rem',letterSpacing:'0.08em'}}>
               <span>{icon}</span>{label}
             </div>
@@ -333,7 +336,7 @@ const handleKey = (
             <p className="f-mono" style={{fontSize:'0.78rem',color:'#e2e8f0',letterSpacing:'0.03em'}}>Anonymous Chat</p>
             <div style={{display:'flex',alignItems:'center',gap:5,marginTop:2}}>
               <div style={{width:6,height:6,borderRadius:'50%',background:'#34d399'}}/>
-              <span className="f-mono" style={{fontSize:'0.6rem',color:'#475569',letterSpacing:'0.08em'}}>sending to @{username}</span>
+              <span className="f-mono" style={{fontSize:'0.6rem',color:'#748697',letterSpacing:'0.08em'}}>sending to @{username}</span>
             </div>
           </div>
         </div>
@@ -344,7 +347,7 @@ const handleKey = (
       </div>
 
       {/* Messages area */}
-      <div style={{padding:'20px 20px 12px',minHeight:280,maxHeight:380,overflowY:'auto',display:'flex',flexDirection:'column',gap:10}}>
+      <div ref={messagesRef} style={{padding:'20px 20px 12px',minHeight:280,maxHeight:380,overflowY:'auto',display:'flex',flexDirection:'column',gap:10}}>
         {msgs.length === 0 && (
           <div style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',textAlign:'center',padding:'32px 16px'}}>
             <div style={{fontSize:32,marginBottom:12}}>👋</div>
@@ -374,7 +377,7 @@ const handleKey = (
               }}>
                 <p className="f-mono" style={{fontSize:'0.78rem',color: msg.sender==='anonymous'?'#e2e8f0':'#94a3b8',lineHeight:1.6,letterSpacing:'0.01em'}}>{msg.content}</p>
               </div>
-              <p className="f-mono" style={{fontSize:'0.55rem',color:'#1e293b',letterSpacing:'0.06em',marginTop:4,textAlign: msg.sender==='anonymous'?'right':'left'}}>{fmtTime(msg.createdAt)}</p>
+              <p className="f-mono" style={{fontSize:'0.55rem',color:'#748697',letterSpacing:'0.06em',marginTop:4,textAlign: msg.sender==='anonymous'?'right':'left'}}>{fmtTime(msg.createdAt)}</p>
             </div>
             {msg.sender === 'anonymous' && (
               <div style={{width:28,height:28,background:'rgba(99,102,241,.15)',border:'1px solid rgba(99,102,241,.25)',borderRadius:9,display:'flex',alignItems:'center',justifyContent:'center',fontSize:13,flexShrink:0,marginBottom:2}}>🕵️</div>
@@ -382,7 +385,6 @@ const handleKey = (
           </div>
         ))}        
 
-         <div ref={bottomRef} />
 
       </div>
 
@@ -502,9 +504,54 @@ export default function PublicProfilePage() {
                 Whi<span className="grad-text" style={{fontStyle:'italic'}}>spr</span>
               </span>
             </Link>
-            <Link href="/sign-up" style={{display:'flex',alignItems:'center',gap:6,padding:'8px 18px',background:'linear-gradient(135deg,#6366f1,#8b5cf6)',borderRadius:10,color:'#fff',fontFamily:"'DM Mono',monospace",fontSize:'0.72rem',letterSpacing:'0.1em',textDecoration:'none',boxShadow:'0 4px 18px rgba(99,102,241,.32)'}}>
-              Sign up free →
-            </Link>
+            <Link
+  href="/sign-up"
+  style={{
+    display: "flex",
+    alignItems: "center",
+    gap: 8,
+    padding: "8px 16px",
+    borderRadius: "12px",
+    textDecoration: "none",
+
+    border: "1px solid rgba(8, 18, 103, 0.25)",  
+
+
+    transition: "all .2s ease",
+
+    color: "#e2e8f0",
+    fontFamily: "'Cormorant Garamond', serif",
+    fontSize: "1rem",
+    letterSpacing: ".08em",
+    fontWeight: 500,
+  }}
+  onMouseEnter={(e) => {
+    e.currentTarget.style.transform = "translateY(-2px)";
+    e.currentTarget.style.boxShadow =
+      "0 12px 40px rgba(99,102,241,.28)";
+    e.currentTarget.style.border =
+      "1px solid rgba(129,140,248,.45)";
+  }}
+  onMouseLeave={(e) => {
+    e.currentTarget.style.transform = "translateY(0)";
+    e.currentTarget.style.boxShadow =
+      "0 0 0 1px rgba(255,255,255,.03) inset, 0 8px 30px rgba(99,102,241,.18)";
+    e.currentTarget.style.border =
+      "1px solid rgba(129,140,248,.25)";
+  }}
+>
+  <span>Sign up</span>
+
+  <span
+    className="grad-text"
+    style={{
+      fontStyle: "italic",
+      fontWeight: 600,
+    }}
+  >
+    free →
+  </span>
+</Link>
           </div>
         </nav>
 
@@ -516,7 +563,7 @@ export default function PublicProfilePage() {
             <h1 className="f-cormorant hero-title" style={{fontSize:'clamp(2.2rem,6vw,4rem)',fontWeight:300,color:'#f1f5f9',lineHeight:1.1,letterSpacing:'0.01em',marginBottom:14}}>
               Send anonymous vibes <span className="grad-gold" style={{fontStyle:'italic'}}>✨</span>
             </h1>
-            <p className="f-mono" style={{fontSize:'0.78rem',color:'#475569',letterSpacing:'0.04em',lineHeight:1.7,maxWidth:380,margin:'0 auto'}}>
+            <p className="f-mono" style={{fontSize:'0.78rem',color:'#748697',letterSpacing:'0.04em',lineHeight:1.7,maxWidth:380,margin:'0 auto'}}>
               You're sending to{' '}
               <span style={{color:'#818cf8',borderBottom:'1px solid rgba(129,140,248,.35)',paddingBottom:1}}>@{username}</span>
               {' '}— they'll never know it's you
@@ -529,11 +576,16 @@ export default function PublicProfilePage() {
             {/* LEFT col */}
             <div style={{display:'flex',flexDirection:'column',gap:20}}>
 
+              {/* Anonymous Chat */}
+              <div className="anim-1 accent-line">
+                <AnonymousChat username={username}/>
+              </div>
+
               {/* Message box */}
-              <div className="anim-1 accent-line" style={{position:'relative',background:'rgba(15,19,28,.88)',border:`1px solid ${focused?'rgba(99,102,241,.45)':'rgba(99,102,241,.14)'}`,borderRadius:20,padding:'26px 26px 20px',backdropFilter:'blur(24px)',boxShadow:focused?'0 0 0 1px rgba(99,102,241,.12),0 24px 64px rgba(99,102,241,.1)':'0 20px 48px rgba(0,0,0,.4)',transition:'border-color .3s,box-shadow .3s',overflow:'hidden'}}>
+              <div className="anim-4 accent-line" style={{position:'relative',background:'rgba(15,19,28,.88)',border:`1px solid ${focused?'rgba(99,102,241,.45)':'rgba(99,102,241,.14)'}`,borderRadius:20,padding:'26px 26px 20px',backdropFilter:'blur(24px)',boxShadow:focused?'0 0 0 1px rgba(99,102,241,.12),0 24px 64px rgba(99,102,241,.1)':'0 20px 48px rgba(0,0,0,.4)',transition:'border-color .3s,box-shadow .3s',overflow:'hidden'}}>
                 <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:14}}>
                   <div style={{width:7,height:7,borderRadius:'50%',background:'linear-gradient(135deg,#6366f1,#ec4899)'}}/>
-                  <span className="f-mono" style={{fontSize:'0.62rem',letterSpacing:'0.18em',textTransform:'uppercase',color:'#475569'}}>Anonymous message</span>
+                  <span className="f-mono" style={{fontSize:'0.62rem',letterSpacing:'0.18em',textTransform:'uppercase',color:'#748697'}}>Anonymous message</span>
                 </div>
                 <textarea ref={textRef} className="msg-area f-mono" value={message}
                   onChange={e=>setMessage(e.target.value.slice(0,MAX_CHARS))}
@@ -551,20 +603,60 @@ export default function PublicProfilePage() {
                     <span className="f-mono" style={{fontSize:'0.62rem',letterSpacing:'0.08em',color:charPct>90?'#f87171':charPct>70?'#fbbf24':'#334155'}}>{charsLeft}</span>
                   </div>
                   <button onClick={handleSend} disabled={sending||!message.trim()}
-                    style={{display:'flex',alignItems:'center',gap:8,padding:'10px 22px',background:'linear-gradient(135deg,#6366f1,#8b5cf6 50%,#ec4899)',border:'none',borderRadius:12,color:'#fff',fontFamily:"'DM Mono',monospace",fontSize:'0.73rem',letterSpacing:'0.1em',cursor:sending||!message.trim()?'not-allowed':'pointer',opacity:sending||!message.trim()?.45:1,boxShadow:'0 4px 20px rgba(99,102,241,.32)',transition:'opacity .2s,transform .15s,box-shadow .2s'}}
-                    onMouseEnter={e=>{if(!sending&&message.trim()){const b=e.currentTarget as HTMLButtonElement;b.style.transform='translateY(-1px)';b.style.boxShadow='0 8px 28px rgba(99,102,241,.45)'}}}
-                    onMouseLeave={e=>{const b=e.currentTarget as HTMLButtonElement;b.style.transform='translateY(0)';b.style.boxShadow='0 4px 20px rgba(99,102,241,.32)'}}>
+                    style={{
+    display: "flex",
+    alignItems: "center",
+    gap: 8,
+    padding: "8px 16px",
+    borderRadius: "12px",
+    textDecoration: "none",
+
+    background:
+      "linear-gradient(135deg, rgba(99,102,241,.14), rgba(236,72,153,.10))",
+    border: "1px solid rgba(129,140,248,.25)",
+    backdropFilter: "blur(18px)",
+    WebkitBackdropFilter: "blur(18px)",
+
+    boxShadow:
+      "0 0 0 1px rgba(255,255,255,.03) inset, 0 8px 30px rgba(99,102,241,.18)",
+
+    transition: "all .3s ease",
+
+    color: "#e2e8f0",
+    fontFamily: "'Cormorant Garamond', serif",
+    fontSize: "1rem",
+    letterSpacing: ".08em",
+    fontWeight: 500,
+  }}
+  onMouseEnter={(e) => {
+    e.currentTarget.style.transform = "translateY(-2px)";
+    e.currentTarget.style.boxShadow =
+      "0 12px 40px rgba(99,102,241,.28)";
+    e.currentTarget.style.border =
+      "1px solid rgba(129,140,248,.45)";
+  }}
+  onMouseLeave={(e) => {
+    e.currentTarget.style.transform = "translateY(0)";
+    e.currentTarget.style.boxShadow =
+      "0 0 0 1px rgba(255,255,255,.03) inset, 0 8px 30px rgba(99,102,241,.18)";
+    e.currentTarget.style.border =
+      "1px solid rgba(129,140,248,.25)";
+  }}
+                    >
                     {sending
                       ? <><span className="spin" style={{display:'block',width:13,height:13,borderRadius:'50%',border:'2px solid rgba(255,255,255,.25)',borderTopColor:'#fff'}}/>Sending…</>
-                      : <><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} width={13} height={13}><path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/></svg>Send it ✨</>
+                      : <><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} width={13} height={13}><path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/></svg><span
+    className="grad-text"
+    style={{
+      fontStyle: "italic",
+      fontWeight: 600,
+    }}
+  >
+    Send it
+  </span></>
                     }
                   </button>
                 </div>
-              </div>
-
-              {/* Anonymous Chat */}
-              <div className="anim-4">
-                <AnonymousChat username={username}/>
               </div>
 
             </div>
@@ -577,8 +669,8 @@ export default function PublicProfilePage() {
                 <div style={{display:'flex',alignItems:'flex-start',gap:12,marginBottom:20}}>
                   <div style={{width:36,height:36,background:'rgba(99,102,241,.1)',border:'1px solid rgba(99,102,241,.2)',borderRadius:10,display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,flexShrink:0}}>🤖</div>
                   <div>
-                    <p className="f-mono" style={{fontSize:'0.82rem',color:'#cbd5e1',letterSpacing:'0.03em',marginBottom:3}}>Need ideas? Let AI help you</p>
-                    <p className="f-mono" style={{fontSize:'0.65rem',color:'#334155',letterSpacing:'0.07em'}}>Pick a vibe and let the AI cook 🔥</p>
+                    <p className="f-mono" style={{fontSize:'0.9rem',color:'#cbd5e1',letterSpacing:'0.03em',marginBottom:3}}>Need ideas? Let AI help you</p>
+                    <p className="f-mono" style={{fontSize:'0.65rem',color:'#748697',letterSpacing:'0.07em'}}>Pick a vibe and let the AI cook 🔥</p>
                   </div>
                 </div>
 
@@ -612,7 +704,7 @@ export default function PublicProfilePage() {
                       onClick={()=>{setMessage(s.slice(0,MAX_CHARS));textRef.current?.focus();toast.success('Loaded! Edit or send ✏️')}}
                       style={{background:'rgba(15,19,28,.7)',border:'1px solid rgba(99,102,241,.1)',borderRadius:13,padding:'14px',display:'flex',alignItems:'flex-start',gap:10}}>
                       <span className="f-mono" style={{fontSize:'0.56rem',color:'rgba(99,102,241,.4)',marginTop:2,flexShrink:0}}>0{i+1}</span>
-                      <p className="f-mono" style={{fontSize:'0.76rem',color:'#94a3b8',letterSpacing:'0.02em',lineHeight:1.6,textAlign:'left',flex:1}}>{s}</p>
+                      <p className="f-mono" style={{fontSize:'0.76rem',color:'#cbd5e1',letterSpacing:'0.02em',lineHeight:1.6,textAlign:'left',flex:1}}>{s}</p>
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} width={12} height={12} style={{color:'#1e293b',flexShrink:0,marginTop:2}}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.637c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184"/>
                       </svg>
@@ -622,7 +714,7 @@ export default function PublicProfilePage() {
                     ? <div style={{textAlign:'center',padding:'28px 0',color:'#334155',fontFamily:"'DM Mono',monospace",fontSize:'0.7rem',letterSpacing:'0.08em'}}>Nothing generated — try again ✨</div>
                     : <div style={{textAlign:'center',padding:'36px 20px',border:'1px dashed rgba(255,255,255,.05)',borderRadius:13}}>
                         <div style={{fontSize:32,marginBottom:10}}>🎭</div>
-                        <p className="f-mono" style={{fontSize:'0.68rem',color:'#1e293b',letterSpacing:'0.08em',lineHeight:1.6}}>Pick a mood above<br/>and generate suggestions</p>
+                        <p className="f-mono" style={{fontSize:'0.68rem',color:'#748697',letterSpacing:'0.08em',lineHeight:1.6}}>Pick a mood above<br/>and generate suggestions</p>
                       </div>
                   }
                 </div>
@@ -660,8 +752,8 @@ export default function PublicProfilePage() {
 
           {/* Footer */}
           <div style={{textAlign:'center',marginTop:48}}>
-            <p className="f-mono" style={{fontSize:'0.6rem',color:'#1e293b',letterSpacing:'0.12em'}}>
-              Messages are 100% anonymous · powered by <span className="grad-text">Whispr AI</span>
+              <p className="f-mono" style={{fontSize:'0.8rem',color:'#748697',letterSpacing:'0.12em'}}>
+              Messages are 100% anonymous · powered by <span className="grad-text">Whispr AI</span> · Developed by <a className="grad-text" href="https://abhikhokhar.tech/instagram">Abhi Khokhar</a>
             </p>
           </div>
         </main>
